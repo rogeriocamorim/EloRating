@@ -15,10 +15,10 @@ public class Main {
         // Player 4 Lose from player 1, 2, 3.
 
         System.out.println("""
-                           This Elo is generated when:
-                           player 2 lose from 1 first and then win over 3 and 4.
-                           Player 3 lose from 1 and 2 first and then win over 4.
-                           """);
+                This Elo is generated when:
+                player 2 lose from 1 first and then win over 3 and 4.
+                Player 3 lose from 1 and 2 first and then win over 4.
+                """);
         //Player 1 calculation
         double player1Rating = 0.0;
         //// Player 1 win over player 2
@@ -77,9 +77,9 @@ public class Main {
         System.out.println("\n===========\n");
 
         System.out.println("""
-                                   This Elo is generated when:
-                                   player 2 win over 3 and 4 first and then lose from 1.
-                                   Player 3 win over 4 first and then lose from 1 and 2.
+                This Elo is generated when:
+                player 2 win over 3 and 4 first and then lose from 1.
+                Player 3 win over 4 first and then lose from 1 and 2.
                                    """);        //Player 1 calculation
         player1Rating = 0.0;
         //// Player 1 win over player 2
@@ -139,11 +139,11 @@ public class Main {
         System.out.println("\n===========\n");
 
         System.out.println("""
-                           This Elo is generated in inverted order:
-                            Player 4 lose from 1, 2, 3 first.
-                            Player 3 lose from 1, 2 first and then win over 4.
-                            Player 2 lose from 1 first and then win over 3 and 4.
-                           """);
+                This Elo is generated in inverted order:
+                 Player 4 lose from 1, 2, 3 first.
+                 Player 3 lose from 1, 2 first and then win over 4.
+                 Player 2 lose from 1 first and then win over 3 and 4.
+                """);
 
         //Player 4 calculation
         player4Rating = 0.0;
@@ -203,11 +203,11 @@ public class Main {
         System.out.println("\n===========\n");
 
         System.out.println("""
-                           This Elo is generated in inverted order:
-                            Player 4 lose from 1, 2, 3 first.
-                            Player 3 win over 4 first and then lose from 1, 2.
-                            Player 2 win over 3 and 4 first and then lose from 1.
-                           """);
+                This Elo is generated in inverted order:
+                 Player 4 lose from 1, 2, 3 first.
+                 Player 3 win over 4 first and then lose from 1, 2.
+                 Player 2 win over 3 and 4 first and then lose from 1.
+                """);
 
         //Player 4 calculation
         player4Rating = 0.0;
@@ -266,6 +266,30 @@ public class Main {
 
         System.out.println("\n===========\n");
 
+        System.out.println("""
+                This Elo is generated simultaneously:
+                """);
+
+        double matchup_1_vs_2 = calculateRatingUpdate(players.get(0).oldRating, players.get(1).oldRating, 1.0);
+        double matchup_1_vs_3 = calculateRatingUpdate(players.get(0).oldRating, players.get(2).oldRating, 1.0);
+        double matchup_1_vs_4 = calculateRatingUpdate(players.get(0).oldRating, players.get(3).oldRating, 1.0);
+
+        double matchup_2_vs_3 = calculateRatingUpdate(players.get(1).oldRating, players.get(2).oldRating, 1.0);
+        double matchup_2_vs_4 = calculateRatingUpdate(players.get(1).oldRating, players.get(3).oldRating, 1.0);
+
+        double matchup_3_vs_4 = calculateRatingUpdate(players.get(2).oldRating, players.get(3).oldRating, 1.0);
+
+        player1Rating = players.get(0).oldRating + matchup_1_vs_2 + matchup_1_vs_3 + matchup_1_vs_4;
+        player2Rating = players.get(1).oldRating - matchup_1_vs_2 + matchup_2_vs_3 + matchup_2_vs_4;
+        player3Rating = players.get(2).oldRating - matchup_1_vs_3 - matchup_2_vs_3 + matchup_3_vs_4;
+        player4Rating = players.get(3).oldRating - matchup_1_vs_4 - matchup_2_vs_4 - matchup_3_vs_4;
+
+        System.out.println("Player 1: " + player1Rating);
+        System.out.println("Player 2: " + player2Rating);
+        System.out.println("Player 3: " + player3Rating);
+        System.out.println("Player 4: " + player4Rating);
+
+        System.out.println("\n===========\n");
 
     }
 
@@ -282,6 +306,11 @@ public class Main {
      */
     public static double calculateExpectedScore(double rating, double opponentRating) {
         return 1.0 / (1.0 + Math.pow(10, (opponentRating - rating) / 400.0));
+    }
+
+    public static double calculateRatingUpdate(double currentRating, double opponentRating, double score) {
+        double expectedScore = calculateExpectedScore(currentRating, opponentRating);
+        return DEFAULT_K_FACTOR * (score - expectedScore);
     }
 
     /**
