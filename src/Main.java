@@ -14,7 +14,11 @@ public class Main {
         // Player 3 win over player 4. And Lose from player 1, 2.
         // Player 4 Lose from player 1, 2, 3.
 
-        System.out.println("Elo calculation when calculate before losing from other players");
+        System.out.println("""
+                           This Elo is generated when:
+                           player 2 lose from 1 first and then win over 3 and 4.
+                           Player 3 lose from 1 and 2 first and then win over 4.
+                           """);
         //Player 1 calculation
         double player1Rating = 0.0;
         //// Player 1 win over player 2
@@ -70,8 +74,13 @@ public class Main {
 
         System.out.println("Player 4: " + player4Rating);
 
-        System.out.println("Elo calculation when calculate after losing from other players");
-        //Player 1 calculation
+        System.out.println("\n===========\n");
+
+        System.out.println("""
+                                   This Elo is generated when:
+                                   player 2 win over 3 and 4 first and then lose from 1.
+                                   Player 3 win over 4 first and then lose from 1 and 2.
+                                   """);        //Player 1 calculation
         player1Rating = 0.0;
         //// Player 1 win over player 2
 
@@ -96,7 +105,6 @@ public class Main {
 
         //// Player 2 Lose from player 1
         player2Rating = updateRating(players.get(1).oldRating, player1Rating, 0.0);
-
 
         System.out.println("Player 2: " + player2Rating);
 
@@ -127,6 +135,138 @@ public class Main {
         player4Rating = updateRating(player4Rating, player3Rating, 0.0);
 
         System.out.println("Player 4: " + player4Rating);
+
+        System.out.println("\n===========\n");
+
+        System.out.println("""
+                           This Elo is generated in inverted order:
+                            Player 4 lose from 1, 2, 3 first.
+                            Player 3 lose from 1, 2 first and then win over 4.
+                            Player 2 lose from 1 first and then win over 3 and 4.
+                           """);
+
+        //Player 4 calculation
+        player4Rating = 0.0;
+        //// Player 4 Lose from player 1
+        player4Rating = updateRating(players.get(3).oldRating, player1Rating, 0.0);
+
+        //// Player 4 Lose from player 2
+        player4Rating = updateRating(player4Rating, player2Rating, 0.0);
+
+        //// Player 4 Lose from player 3
+        player4Rating = updateRating(player4Rating, player3Rating, 0.0);
+
+        System.out.println("Player 4: " + player4Rating);
+
+        //Player 3 calculation
+        player3Rating = 0.0;
+
+        //// Player 3 Lose from player 1
+        player3Rating = updateRating(players.get(2).oldRating, player1Rating, 0.0);
+
+        //// Player 3 Lose from player 2
+        player3Rating = updateRating(player3Rating, player2Rating, 0.0);
+
+        //// Player 3 win over player 4
+        player3Rating = updateRating(player3Rating, players.get(3).oldRating, 1.0);
+
+        System.out.println("Player 3: " + player3Rating);
+
+        //Player 2 calculation
+        player2Rating = 0.0;
+
+        //// Player 2 Lose from player 1
+        player2Rating = updateRating(players.get(1).oldRating, player1Rating, 0.0);
+
+        //// Player 2 win over player 3
+        player2Rating = updateRating(player2Rating, players.get(2).oldRating, 1.0);
+
+        //// Player 2 win over player 4
+        player2Rating = updateRating(player2Rating, players.get(3).oldRating, 1.0);
+
+        System.out.println("Player 2: " + player2Rating);
+
+        //Player 1 calculation
+        player1Rating = 0.0;
+        //// Player 1 win over player 2
+
+        player1Rating = updateRating(players.get(0).oldRating, players.get(1).oldRating, 1.0);
+
+        //// Player 1 win over player 3
+        player1Rating = updateRating(player1Rating, players.get(2).oldRating, 1.0);
+
+        //// Player 1 win over player 4
+        player1Rating = updateRating(player1Rating, players.get(3).oldRating, 1.0);
+
+        System.out.println("Player 1: " + player1Rating);
+
+        System.out.println("\n===========\n");
+
+        System.out.println("""
+                           This Elo is generated in inverted order:
+                            Player 4 lose from 1, 2, 3 first.
+                            Player 3 win over 4 first and then lose from 1, 2.
+                            Player 2 win over 3 and 4 first and then lose from 1.
+                           """);
+
+        //Player 4 calculation
+        player4Rating = 0.0;
+        //// Player 4 Lose from player 1
+        player4Rating = updateRating(players.get(3).oldRating, player1Rating, 0.0);
+
+        //// Player 4 Lose from player 2
+        player4Rating = updateRating(player4Rating, player2Rating, 0.0);
+
+        //// Player 4 Lose from player 3
+        player4Rating = updateRating(player4Rating, player3Rating, 0.0);
+
+        System.out.println("Player 4: " + player4Rating);
+
+        //Player 3 calculation
+        player3Rating = 0.0;
+
+        //// Player 3 win over player 4
+        player3Rating = updateRating(player3Rating, players.get(3).oldRating, 1.0);
+
+        //// Player 3 Lose from player 1
+        player3Rating = updateRating(players.get(2).oldRating, player1Rating, 0.0);
+
+        //// Player 3 Lose from player 2
+        player3Rating = updateRating(player3Rating, player2Rating, 0.0);
+
+        System.out.println("Player 3: " + player3Rating);
+
+        //Player 2 calculation
+        player2Rating = 0.0;
+
+        //// Player 2 win over player 3
+        player2Rating = updateRating(player2Rating, players.get(2).oldRating, 1.0);
+
+        //// Player 2 win over player 4
+        player2Rating = updateRating(player2Rating, players.get(3).oldRating, 1.0);
+
+        //// Player 2 Lose from player 1
+        player2Rating = updateRating(players.get(1).oldRating, player1Rating, 0.0);
+
+        System.out.println("Player 2: " + player2Rating);
+
+        //Player 1 calculation
+        player1Rating = 0.0;
+
+        //// Player 1 win over player 2
+        player1Rating = updateRating(players.get(0).oldRating, players.get(1).oldRating, 1.0);
+
+        //// Player 1 win over player 3
+        player1Rating = updateRating(player1Rating, players.get(2).oldRating, 1.0);
+
+        //// Player 1 win over player 4
+        player1Rating = updateRating(player1Rating, players.get(3).oldRating, 1.0);
+
+        System.out.println("Player 1: " + player1Rating);
+
+        System.out.println("\n===========\n");
+
+
     }
 
     private static final int DEFAULT_K_FACTOR = 10;
